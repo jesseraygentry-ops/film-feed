@@ -755,7 +755,7 @@ nav.main a.cta{margin-left:0}
   <div><h4>Sections</h4><a href="#this-week">This Week — Weekly No. 1</a><a href="#news">Film News</a><a href="#the-list">The Film Feed 12</a><a href="#play">Have Your Say</a><a href="#latest">All Stories — Library</a><a href="#latest">Indie Films</a><a href="#latest">TV Shows</a><a href="#latest">Short Films</a></div>
   <div><h4>Explore</h4><a href="#locations">Filming Locations</a><a href="#festivals">Festivals</a><a href="#region">WY · ID · ND · SD</a><a href="#digest">The Rushes</a><a href="#directory">Regional Directory</a><a href="#sponsor">Sponsor Film Feed</a><a href="#newsletter">Weekly Newsletter</a><form class="foot-capture news-capture" novalidate><input required type="email" placeholder="Email for the Friday Briefing" aria-label="Email address for the Friday Briefing"/><button class="btn sm" type="submit">Join</button></form><p class="cmsg" hidden style="font-weight:700;color:#fff;font-size:13.5px;margin:10px 0 0"></p></div>
   <div><h4>How we work</h4><p>Film Feed is weekly from October 29, 2026 — a new edition every Thursday, Friday Briefing every Friday. Every story links its source in the reader. “Filmed in” and “set in” are never used interchangeably. Contact: contact@filmfeed.site.</p></div>
-</div><div class="siteindex"><h4>Site Index — Every Story in the Library</h4><details class="siteindex-drop" id="allStoriesDrop"><summary><span class="si-summary-main">All Stories</span><span class="si-summary-meta">9 sections + 31 stories — tap to open</span><span class="si-chevron" aria-hidden="true">▾</span></summary><div class="si-panel"><p class="si-group-label">Sections</p><div class="cols" id="siteIndexSections"></div><p class="si-group-label" id="siteIndexStoriesLabel">All Stories — 31 Stories</p><div class="cols" id="siteIndex"></div></div></details><p style="margin:14px 0 0"><button class="btn ghost sm" id="sitemapBtn" type="button">Download sitemap.xml</button> <span style="color:var(--faint);font-size:13px">For submitting filmfeed.site to Google Search Console.</span></p></div>
+</div><div class="siteindex"><h4>Site Index — Every Story in the Library</h4><details class="siteindex-drop" id="allStoriesDrop"><summary><span class="si-summary-main">All Stories</span><span class="si-summary-meta">9 sections + 31 stories — tap to open</span><span class="si-chevron" aria-hidden="true">▾</span></summary><div class="si-panel"><p class="si-group-label">Sections</p><div class="cols" id="siteIndexSections"></div><p class="si-group-label" id="siteIndexStoriesLabel">All Stories — 31 Stories</p><div class="cols" id="siteIndex"></div></div></details></div>
 <p class="colophon">© 2026 Film Feed · Montana's weekly screen magazine. All photos are real location photography, not film stills. Festival dates are the 2026 editions, refreshed weekly. Made in Montana.</p></div></footer>
 
 <dialog id="reader"><div class="modal-in"><button class="btn ghost sm" onclick="document.getElementById('reader').close()">← All stories</button><div id="readerContent"></div></div></dialog>
@@ -989,7 +989,7 @@ function renderDigest(){
   const items=ARTICLES.filter(a=>a.cat==='News');
   el.innerHTML=items.map(a=>`<button class="digest-item" onclick="openArticle('${a.id}')"><span class="dk">${a.year}</span><span><h4>${a.title}</h4><p>${a.town} · ${a.read} read</p></span></button>`).join('');
 }
-/* ---- Site index + sitemap.xml download ---- */
+/* ---- Site index ---- */
 function renderSiteIndex(){
   const el=document.getElementById('siteIndex'); if(!el) return;
   /* Everything below lives under "All Stories" in the Site Index dropdown,
@@ -1005,16 +1005,6 @@ function renderSiteIndex(){
   if(meta) meta.textContent=dropSections.length+' sections + '+ARTICLES.length+' stories — tap to open';
   const storiesLabel=document.getElementById('siteIndexStoriesLabel');
   if(storiesLabel) storiesLabel.textContent='All Stories — '+ARTICLES.length+' Stories';
-  const sections=[['#trending','Trending Now'],['#news','Film News'],['#digest','The Rushes — Regional Digest'],['#the-list','The Film Feed 12'],['#latest','All Stories'],['#play','Have Your Say — Quiz & Poll'],['#locations','Filmed Here — Locations'],['#festivals','Festival Calendar'],['#region','Beyond Montana — The Region'],['#resources','Montana Film Office Resources'],['#directory','Regional Directory'],['#sponsor','Sponsor Film Feed'],['#submit','Submit Your Project'],['#newsletter','The Friday Briefing']];
-  const btn=document.getElementById('sitemapBtn');
-  if(btn) btn.addEventListener('click',()=>{
-    const urls=['https://filmfeed.site/'].concat(sections.map(s=>'https://filmfeed.site/'+s[0])).concat(ARTICLES.map(a=>'https://filmfeed.site/#'+a.id));
-    const xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+urls.map(u=>'  <url><loc>'+u+'</loc><lastmod>2026-10-29</lastmod></url>').join('\n')+'\n</urlset>';
-    const aEl=document.createElement('a');
-    aEl.href=URL.createObjectURL(new Blob([xml],{type:'application/xml'}));
-    aEl.download='sitemap.xml'; aEl.click();
-    setTimeout(()=>URL.revokeObjectURL(aEl.href),4000);
-  });
 }
 /* ---- Top search (sticky nav) ----
    Searches the same ARTICLES data that renders the cards and the Site Index
